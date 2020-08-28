@@ -19,6 +19,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.media.MediaScannerConnection
 
 class SaveInGalleryPlugin(
     private val context: Activity
@@ -113,6 +114,8 @@ class SaveInGalleryPlugin(
             FileOutputStream(File(directory, formattedName)).use { out ->
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
             }
+            MediaScannerConnection.scanFile(context,
+                    arrayOf(imageFile.toString()), null, null)
             request.result.success(true)
         } catch (e: IOException) {
             request.result.error("ERROR", "Error while saving image into file: ${e.message}", null)
